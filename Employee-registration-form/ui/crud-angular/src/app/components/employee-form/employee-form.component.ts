@@ -16,16 +16,16 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class EmployeeFormComponent {
   formBuilder = inject(FormBuilder);
-  httpService = inject(HttpService);
+  httpService = inject(HttpService)
   router = inject(Router);
   route = inject(ActivatedRoute);
-  toaster=inject(ToastrService);
+  toaster = inject(ToastrService);
   employeeForm = this.formBuilder.group({
-    name: ['', [Validators.required]],
-    email: ['', [Validators.required, Validators.email]],
-    age: [0, [Validators.required]],
-    phone: ['', []],
-    salary: [0, [Validators.required]],
+    name: ['', Validators.compose([Validators.required, Validators.pattern(/^[A-Za-z]{5,}$/)])],
+    email: ['', Validators.compose([Validators.required, Validators.email, Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)])],
+    age: [0, Validators.compose([Validators.required, Validators.max(75)])],
+    phone: ['', Validators.compose([Validators.required, Validators.minLength(10), Validators.maxLength(10)])],
+    salary: [0, Validators.compose([Validators.required, Validators.min(0)])]
   });
   employeeId!: number;
   isEdit = false;
@@ -36,7 +36,7 @@ export class EmployeeFormComponent {
       this.httpService.getEmployee(this.employeeId).subscribe((result) => {
         console.log(result);
         this.employeeForm.patchValue(result);
-        this.employeeForm.controls.email.disable();
+        // this.employeeForm.controls.email.disable();
       });
     }
   }
@@ -44,10 +44,10 @@ export class EmployeeFormComponent {
     console.log(this.employeeForm.value);
     const employee: IEmployee = {
       name: this.employeeForm.value.name!,
-      age: this.employeeForm.value.age!,
       email: this.employeeForm.value.email!,
+      age: this.employeeForm.value.age!,
       phone: this.employeeForm.value.phone!,
-      salary: this.employeeForm.value.salary!,
+      salary: this.employeeForm.value.salary!
     };
     if (this.isEdit) {
       this.httpService

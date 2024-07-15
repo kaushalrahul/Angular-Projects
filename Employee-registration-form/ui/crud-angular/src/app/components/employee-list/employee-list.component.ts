@@ -15,18 +15,10 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class EmployeeListComponent {
   router = inject(Router);
+  toaster = inject(ToastrService);
   employeeList: IEmployee[] = [];
   httpService = inject(HttpService);
-  toaster = inject(ToastrService);
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'email',
-    'age',
-    'phone',
-    'salary',
-    'action',
-  ];
+  displayedColumns: string[] = ['id', 'name', 'email', 'age', 'phone', 'salary', 'action'];
   ngOnInit() {
     this.getEmployeeFromServer();
   }
@@ -34,12 +26,14 @@ export class EmployeeListComponent {
     this.httpService.getAllEmployee().subscribe((result) => {
       this.employeeList = result;
       console.log(this.employeeList);
-    });
+    })
   }
+
   edit(id: number) {
     console.log(id);
-    this.router.navigateByUrl('/employee/' + id);
+    this.router.navigateByUrl("/employee/" + id);
   }
+
   delete(id: number) {
     this.httpService.deleteEmployee(id).subscribe(() => {
       console.log('deleted');

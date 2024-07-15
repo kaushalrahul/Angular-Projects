@@ -23,9 +23,13 @@ export class HttpService {
     return this.http.get<IEmployee>(this.apiUrl + '/api/Employee/' + employeeId);
   }
 
-  updateEmployee(employeeId:number,employee:IEmployee){
-    return this.http.put<IEmployee>(this.apiUrl + '/api/Employee/' + employeeId, employee);
+  // updateEmployee(employeeId:number,employee:IEmployee){
+  //   return this.http.put<IEmployee>(this.apiUrl + '/api/Employee/' + employeeId, employee);
+  // }
+  updateEmployee(employeeId: number, employee: IEmployee) {
+    return this.http.put<IEmployee>(`${this.apiUrl}/api/Employee/${employeeId}`, employee);
   }
+  
 
   deleteEmployee(employeeId:number){
     return this.http.delete(this.apiUrl + '/api/Employee/' + employeeId);
